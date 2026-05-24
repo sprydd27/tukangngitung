@@ -5,12 +5,18 @@ from telegram.ext import Application, CommandHandler, MessageHandler, ContextTyp
 
 TOKEN = "8898573242:AAGyXcg9KEhI0PVCXfCmEjoRQ4QYqHjWzZc"
 
-MAJOR_COINS = {"btc": "bitcoin", "eth": "ethereum", "sol": "solana", "usdt": "tether"}
+MAJOR_COINS = {
+    "btc": "bitcoin",
+    "eth": "ethereum",
+    "sol": "solana",
+    "usdt": "tether"
+}
 
 def get_major_price(symbol):
     try:
         cg_id = MAJOR_COINS.get(symbol.lower())
-        if not cg_id: return None
+        if not cg_id:
+            return None
         url = f"https://api.coingecko.com/api/v3/simple/price?ids={cg_id}&vs_currencies=usd"
         data = requests.get(url, timeout=10).json()
         return float(data[cg_id]['usd'])
@@ -27,10 +33,8 @@ def get_dex_price(query):
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "🤖 <b>Price Bot Siap!</b>\n\n"
-        "Kirim: BTC / SOL / ETH / CA token\n"
-        "Contoh: 500 SOL ke IDR\n"
-        "Contoh: 2.5 * 150", parse_mode="HTML")
+        "🤖 <b>Price Bot Siap!</b>\n\nKirim BTC / SOL / ETH / CA token", 
+        parse_mode="HTML")
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text.strip()
